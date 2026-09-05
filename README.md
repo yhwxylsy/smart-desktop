@@ -74,19 +74,23 @@
 
 ## 3. 技术架构与设计
 
-```mermaid
-flowchart LR
-  U[用户 文本/语音] --> B[FastAPI 后端]
-  B -->|AI 规划出 ActionSpec| A[动作/上下文引擎]
-  A -->|NET:CMD:action_id:NET:xxx| WS[(WebSocket /api/realtime/ws)]
-  WS --> E[ESP32S3 桥接]
-  E <-->|UART 9600/4800 + BT:* 回执| S[STM32 执行器]
-  S -->|OLED/RGB/SYN6288/风扇/舵机/蜂鸣/旋律| Hw[桌面硬件]
-  S -->|BT:{telemetry}| B
-  R[RC522 RFID] --> E --> B
-  M[笔记本 PTT 语音] -->|/api/asr/*| B
-  P[微信小程序 / Web] <-->|REST + WS| B
+```text
+[用户 文本/语音] ──► [FastAPI 后端] ──► [动作/上下文引擎] ──► [WebSocket /api/realtime/ws]
+                                                                        │
+                                                                        ▼
+[微信小程序 / Web] ◄── REST + WS ──► [FastAPI 后端] ◄── UART 9600/4800 + BT:* 回执 ── [ESP32S3 桥接]
+   ▲                                      ▲                                     │
+   │ REST + WS                           │ /api/asr/*                          │ 串口（命令 9600 / ACK 4800）
+   │                                      │                                     ▼
+   │                              [笔记本 PTT 语音]                       [STM32 执行器]
+   │                                                                            │
+   │                                                                            ▼
+   │                                                          [OLED / RGB / SYN6288 / 风扇 / 舵机 / 蜂鸣 / 旋律]
+   │
+   └─── [RC522 RFID] ──► [ESP32S3 桥接] ──► /api/rfid/scan ──► [FastAPI 后端]
 ```
+
+（若 GitHub 上因渲染器差异导致 ASCII 框线错位，可参考 `docs/ARCHITECTURE.md` 取得纯文本版）
 
 - **统一会话状态机**（STM32）：`S0 BOOT → S1 LOCKED → S2 READY → S3 LISTEN → S4 PROCESS → S5 SPEAK → S6 EXEC → S7 ERROR`；
   RGB/OLED/锁定逻辑全部派生自此状态机。`LOCKED` 只能被 `NET:LOCK:OFF` 解锁。
