@@ -47,7 +47,7 @@ static const char *DEVICE_ID = "desktop-agent-001";
 static const char *EDGE_ID = "esp32s3-sense-001";
 
 static const int STM32_TX_PIN = 6;   // XIAO D5 -> STM32 PB11, 9600 baud
-static const int STM32_RX_PIN = 44;  // XIAO D7 <- STM32 PB3, 4800 baud
+static const int STM32_RX_PIN = 44;  // XIAO D7 <- STM32 PB3, 9600 baud
 
 static const int RFID_RST_PIN = 3;   // XIAO D2
 static const int RFID_SS_PIN = 4;    // XIAO D3

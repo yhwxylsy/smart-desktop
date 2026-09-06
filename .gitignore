@@ -29,3 +29,7 @@ backend/data/*.db
 backend/data/*.sqlite3
 backend/data/audio/
 .playwright-cli/
+build/
+.build_stm32/
+.build_esp32/
+compile_commands.json

@@ -39,7 +39,7 @@ void setup() {
   Serial.println("[BOOT] smart desktop ESP32S3 bridge");
 
   stm32Tx.begin(9600, SERIAL_8N1, -1, STM32_TX_PIN);
-  stm32Rx.begin(4800, SERIAL_8N1, STM32_RX_PIN, -1);
+  stm32Rx.begin(9600, SERIAL_8N1, STM32_RX_PIN, -1);
 
   byte rfidVersion = initializeRfidReader();
   Serial.print("[RFID] reader version=0x");

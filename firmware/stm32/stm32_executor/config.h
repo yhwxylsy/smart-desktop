@@ -8,9 +8,12 @@
 #pragma once
 #include <Arduino.h>
 
-// ---- 双串口链路：ESP 命令(9600) 与 ESP ACK(4800) 非对称约定，保持不变 ----
+// ---- 双串口链路：ESP 命令(9600) 与 ESP ACK(9600) 对称约定 ----
+// 2026-09-06: ACK 上行由 4800 上调为 9600，与下行一致（ESP32S3 收端为硬件 UART，
+// 4800 并非接收端限制；9600 下 600B 遥测发送阻塞由 ~1.25s 降至 ~0.63s）。
+// 若真机发现 SoftwareSerial TX 波形抖动，回退为 4800 即可（两端同步回退）。
 static const uint32_t ESP_IN_BAUD = 9600;    // ESP32S3 TX -> STM32 PB11 / Serial3 RX
-static const uint32_t ESP_ACK_BAUD = 4800;   // STM32 PB3 software TX -> ESP32S3 RX
+static const uint32_t ESP_ACK_BAUD = 9600;   // STM32 PB3 software TX -> ESP32S3 RX
 
 // ---- 板级引脚（PIN_* 原样搬运）----
 static const int PIN_BUZZER = PB9;

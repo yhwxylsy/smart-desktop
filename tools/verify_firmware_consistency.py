@@ -75,7 +75,7 @@ def check_a_stm32_pins(reference_cfg: str) -> None:
     macros = _pick_macros(reference_cfg)
     expected = {
         "ESP_IN_BAUD": "9600",
-        "ESP_ACK_BAUD": "4800",
+        "ESP_ACK_BAUD": "9600",
         "PIN_BUZZER": "PB9",
         "PIN_DRV8833_IN1": "PA0",
         "PIN_DRV8833_IN2": "PA1",
